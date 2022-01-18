@@ -55,7 +55,7 @@ int main(void)
 			break;
 		}
 	}
-	printf("Setting name?(No->Enter)");
+	write(1,"Setting name?(No->Enter)",25);
 	if (read(0, s, 32) > 1)
 	{
 		bzero(s, 32);
@@ -64,7 +64,7 @@ int main(void)
 		{
 			while (1)
 			{
-				printf("player%d, What your name?\n", i + 1);
+				write(1, (p + i)->name, 32);	write(1, ", What your name?:", 18);
 				iii = read(0, s, 32);
 				if (iii < 32)
 				{
@@ -81,12 +81,13 @@ int main(void)
 						bzero((p + i)->name, 32);
 						strcpy((p + i)->name, s);
 						bzero(s, 32);
-						printf("Welcome, %s", (p + i)->name);
+						printf("Welcome, %s!\n", (p + i)->name);
 						break;
 					}
 				}
 				printf("You can't use this name.\n");
 			}
+			write(1, "\n", 1);
 			i++;
 		}
 	}

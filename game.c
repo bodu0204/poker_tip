@@ -78,7 +78,6 @@ int		det_geme(player	*p, int	pn)
 				if (ii == 1 || !strcmp(s, "c") || !strcmp(s, "C") || !strcmp(s, "call") || !strcmp(s, "Call") || !strcmp(s, "CALL") || !strcmp(s, "0"))
 				{
 					(p + i)->declare = CALL;
-
 				}
 				/* 未完\0 */
 			}
