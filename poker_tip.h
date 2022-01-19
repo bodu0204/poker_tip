@@ -13,12 +13,15 @@ typedef struct
 	int declare;
 } player;
 
-void	d_clear(void);
-void	d_continue(void);
-void	d_exit(void);
-void	d_start(void);
-void	d_change(void);
-void	d_battle(void);
+int	i_str(char *s);
+
+
+void	o_clear(void);
+void	o_continue(void);
+void	o_exit(void);
+void	o_start(void);
+void	o_change(void);
+void	o_battle(void);
 
 void	game(player	*p, int	pn);
 

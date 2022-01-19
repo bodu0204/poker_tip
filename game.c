@@ -13,7 +13,7 @@ void	game(player	*p, int	pn)
 	int		i;
 	char	*s[32];
 
-	d_clear();
+	o_clear();
 	i = 0;
 	while (i < pn)
 	{
@@ -21,14 +21,14 @@ void	game(player	*p, int	pn)
 		(p + i)->table += ENTRY;
 		i++;
 	}
-	d_start();
+	o_start();
 	win = det_geme(p, pn);
 	if (win)
 	{
 		settle(win - 1, p, pn);
 		return;
 	}
-	d_change();
+	o_change();
 	read(0, s, 32);
 	win = det_geme(p, pn);
 	if (win)
@@ -36,7 +36,7 @@ void	game(player	*p, int	pn)
 		settle(win - 1, p, pn);
 		return;
 	}
-	d_battle();
+	o_battle();
 	win = 0;
 	while (!win)
 	{
@@ -72,7 +72,7 @@ int		det_geme(player	*p, int	pn)
 			if ((p + i)->declare != DROP || (p + i)->wallet)
 			{
 				/* 未完 */
-				d_choice(p, i);
+				o_choice(p, i);
 				ii = read(0, s, 32);
 				s[ii - 1] = '\0';
 				if (ii == 1 || !strcmp(s, "c") || !strcmp(s, "C") || !strcmp(s, "call") || !strcmp(s, "Call") || !strcmp(s, "CALL") || !strcmp(s, "0"))

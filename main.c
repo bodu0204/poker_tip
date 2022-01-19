@@ -1,4 +1,5 @@
 #include "poker_tip.h"
+#define MAX_PEOPLE 4
 
 int main(void)
 {
@@ -9,8 +10,10 @@ int main(void)
 	int ii;
 	int iii;
 	char s[32];
-	player *p;
+	player p[MAX_PEOPLE];
 
+
+	bzero(p, sizeof(player) * MAX_PEOPLE);
 	d_clear();
 	printf("Settings\n");
 	while (1)
@@ -26,13 +29,6 @@ int main(void)
 			break;
 		}
 	}
-	p = malloc(sizeof(player) * pn);
-	if (!p)
-	{
-		printf("System error\n");
-		return (0);
-	}
-	bzero(p, sizeof(player) * pn);
 	while (1)
 	{
 		printf("How many tips per person? :");	scanf("%d", &tips);
@@ -65,10 +61,9 @@ int main(void)
 			while (1)
 			{
 				write(1, (p + i)->name, 32);	write(1, ", What your name?:", 18);
-				iii = read(0, s, 32);
-				if (iii < 32)
+				iii = i_str(s);
+				if (iii != -1)
 				{
-					s[iii - 1] = '\0';
 					ii = 0;
 					j = 1;
 					while (j > 0 && ii < i)
@@ -100,7 +95,6 @@ int main(void)
 		pn = i;
 		d_continue();
 	}while (read(0, s, 32) < 2);
-	free(p);
 	d_exit();
 	return (0);
 }
