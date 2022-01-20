@@ -13,15 +13,12 @@ void o_space(void)
 
 void o_nline(int n)
 {
-	int	i;
-
-	i = n % 32;
-	n -= i;
-	write(1, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", i);
+	write(1, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", n % 16);
+	n >>= 4;
 	while (n)
 	{
-		write(1, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", 32);
-		n -= 32;
+		write(1, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", 16);
+		n--;
 	}
 }
 
