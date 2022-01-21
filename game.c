@@ -14,6 +14,8 @@ void	game(player	*p, int	pn)
 	char	*s[32];
 
 	o_clear();
+
+	/* 参加費 */
 	i = 0;
 	while (i < pn)
 	{
@@ -21,21 +23,29 @@ void	game(player	*p, int	pn)
 		(p + i)->table += ENTRY;
 		i++;
 	}
+
 	o_start();
+
+	/* 1回戦目 */
 	win = det_geme(p, pn);
 	if (win)
 	{
 		settle(win - 1, p, pn);
 		return;
 	}
+
 	o_change();
 	read(0, s, 32);
+
+	/* 2回戦目 */
 	win = det_geme(p, pn);
 	if (win)
 	{
 		settle(win - 1, p, pn);
 		return;
 	}
+
+	/* カードオープン */
 	o_battle();
 	win = 0;
 	while (!win)

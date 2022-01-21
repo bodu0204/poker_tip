@@ -5,15 +5,23 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <unistd.h>
+#include <ctype.h>
+
+#define BUFFER 32
+
 typedef struct
 {
-    char name[32];
-    int wallet;
-    int table;
+	char name[BUFFER];
+	int wallet;
+	int table;
 	int declare;
 } player;
 
-int	i_str(char *s);
+int		i_str(char	*s);
+int		i_pn(void);
+int		i_tips(void);
+void	i_name(player	*p, int	pn);
+int		i_n(char	*msg);
 
 
 void	o_clear(void);
@@ -23,6 +31,9 @@ void	o_start(void);
 void	o_change(void);
 void	o_battle(void);
 
+int	isdigit_str(char *s);
+
 void	game(player	*p, int	pn);
+
 
 #endif
