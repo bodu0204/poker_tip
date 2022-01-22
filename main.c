@@ -30,15 +30,15 @@ int main(void)
 	write(1,"Setting name?(No->Enter)",25);
 	if (i_str(s) != 1)
 		i_name(p, pn);/* 名前の取得 */
-	/* do
+	do
 	{
 		game(p, pn);
 		i = 0;
 		while (i < pn && (p + i)->wallet)
 			i++;
 		pn = i;
-		d_continue();
-	}while (read(0, s, 32) < 2);
-	d_exit(); */
+		o_continue();		/* <-未完 */
+	}while (i_str(s) == 1);
+	d_exit();		/* <-未完 */
 	return (0);
 }

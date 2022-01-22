@@ -1,8 +1,10 @@
 #include "poker_tip.h"
 #define ENTRY 1
-#define BET 0
-#define DROP 1
-#define CALL 2
+
+#define DROP -2
+#define ALLIN -1
+#define CALL 0
+#define BET 1
 
 void	settle(int	winer, player	*p, int	pn);
 int		det_geme(player	*p, int	pn);
@@ -11,9 +13,10 @@ void	game(player	*p, int	pn)
 {
 	int		win;
 	int		i;
-	char	*s[32];
+	char	*s[BUFFER];
 
-	o_clear();
+	o_clear();		/* <-未完 */
+	o_start();		/* <-未完 */
 
 	/* 参加費 */
 	i = 0;
@@ -21,90 +24,133 @@ void	game(player	*p, int	pn)
 	{
 		(p + i)->wallet -= ENTRY;
 		(p + i)->table += ENTRY;
+		if ((p + i)->wallet <= 0)/* チップが足りない人 */
+		{
+			o_allin();		/* <-未完 */
+			(p + i)->table += (p + i)->wallet;
+			(p + i)->wallet = 0;
+			(p + i)->declare = ALLIN;
+		}
 		i++;
 	}
-
-	o_start();
 
 	/* 1回戦目 */
 	win = det_geme(p, pn);
 	if (win)
 	{
-		settle(win - 1, p, pn);
+		settle(win - 1, p, pn);		/* <-未完 */
 		return;
 	}
 
-	o_change();
-	read(0, s, 32);
+	o_change();		/* <-未完 */
+	i_str(s);
+	bzero(s, BUFFER);
 
 	/* 2回戦目 */
 	win = det_geme(p, pn);
 	if (win)
 	{
-		settle(win - 1, p, pn);
+		settle(win - 1, p, pn);		/* <-未完 */
 		return;
 	}
 
 	/* カードオープン */
-	o_battle();
-	win = 0;
-	while (!win)
-	{
-		i = read(0, s, 32);
-		s[i - 1] = '\0';
-		i = 0;
-		while (i < pn)
-		{
-			if (!strcmp(s, (p + i)->name))
-				win = i + 1;
-			i++;
-		}
-		i = atoi(s);
-		if(!win && i > 0 && i <= pn)
-			win = i;
-	}
-	settle(win - 1, p, pn);
+	o_battle();		/* <-未完 */
+	win = i_winer();		/* <-未完 */
+	settle(win - 1, p, pn);		/* <-未完 */
 	return;
 }
 
-int		det_geme(player	*p, int	pn)
+int		det_geme(player	*p, int	pn)/* 勝負が付かなければ->0, 勝負がつけば->何番目のプレーヤか */
 {
-	int		i;
-	int		ii;
-	char	s[32];
 	int		drop;
+	int		allin;
+	int		call;
+	int		rate;
+	int		bet;
+	int		i;
 
-	while (1)
+	drop = 0;
+	allin = 0;
+	call = 0;
+	for (size_t ii = 0; ii < pn; ii++)
+		if ((p + ii)->declare == DROP)
+			drop++;
+		else if ((p + ii)->declare == ALLIN)
+			allin++;
+		else
+			(p + ii)->declare = BET;
+	i = 0;
+	rate = 0;
+	while (drop + call + allin < pn)
 	{
-		i = 0;
-		while (i < pn && drop != pn - 1)
+		if ((p + i)->declare == BET)/* DROPとALLINの人はスキップ	(CALLの人はいない) */
 		{
-			if ((p + i)->declare != DROP || (p + i)->wallet)
+			bet = i_choice();		/* i_choice() :プレーヤに選択を訪ねてそれに応じて、drop-> -2, all_in-> -1, call->0, rase->賭け金 */		/* <-未完 */
+			if (!rate && bet == DROP)		/* 降りなくていい勝負で降りている人 */
+				bet = CALL;
+			if (bet + rate >= (p + i)->table + (p + i)->wallet && bet >= 0/* call or rase */)		/* 賭け金が足りていない人 */
+				bet = ALLIN;
+			switch (bet)		/* それぞれの状況に合わせて処理 */
 			{
-				/* 未完 */
-				o_choice(p, i);
-				ii = read(0, s, 32);
-				s[ii - 1] = '\0';
-				if (ii == 1 || !strcmp(s, "c") || !strcmp(s, "C") || !strcmp(s, "call") || !strcmp(s, "Call") || !strcmp(s, "CALL") || !strcmp(s, "0"))
-				{
-					(p + i)->declare = CALL;
-				}
-				/* 未完\0 */
+			case DROP:
+				o_drop();		/* <-未完 */
+				(p + i)->declare = DROP;
+				drop++;
+				break;
+			case ALLIN:
+				o_allin();		/* <-未完 */
+				if ((p + i)->table + (p + i)->wallet > rate)
+					rate = (p + i)->table + (p + i)->wallet;
+				(p + i)->table += (p + i)->wallet;
+				(p + i)->wallet = 0;
+				(p + i)->declare = ALLIN;
+				allin++;
+				break;
+			case CALL:
+				o_call();		/* <-未完 */
+				(p + i)->wallet -= rate - (p + i)->table;
+				(p + i)->table = rate;
+				(p + i)->declare = CALL;
+				call++;
+				break;
+			default:
+				o_bet();		/* <-未完 */
+				rate += bet;
+				(p + i)->wallet -= rate - (p + i)->table;
+				(p + i)->table = rate;
+				for (size_t ii = 0; ii < pn; ii++)
+					if ((p + ii)->declare == CALL)
+						(p + ii)->declare = BET;
+				call = 0;
+				break;
 			}
-			i++;
 		}
-		i = 0;
+		i++;
+		i %= pn;
 		if (drop == pn - 1)
-		{
-			while (i < pn && (p + 1)->declare != DROP)
-				i++;
 			return (i + 1);
-		}
-		while ((p + 1)->declare == DROP || (p + 1)->declare == CALL)
-		{
-			i++;
-			if (i == pn)
-				return (0);
-		}
 	}
+	return (0);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
