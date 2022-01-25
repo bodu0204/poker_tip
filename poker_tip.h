@@ -9,6 +9,13 @@
 
 #define BUFFER 32
 
+#define MAX_PEOPLE 4
+
+#define DROP -2
+#define ALLIN -1
+#define CALL 0
+#define BET 1
+
 typedef struct
 {
 	char name[BUFFER];
@@ -22,6 +29,7 @@ int		i_pn(void);
 int		i_tips(void);
 void	i_name(player	*p, int	pn);
 int		i_n(char	*msg);
+int		i_choice(int	rate, player	*p, int pi);
 
 
 void	o_clear(void);

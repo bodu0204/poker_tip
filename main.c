@@ -1,5 +1,4 @@
 #include "poker_tip.h"
-#define MAX_PEOPLE 4
 
 int main(void)
 {

@@ -32,7 +32,7 @@ int	i_pn(void)
 		pn = i_n("How many playrs? :");
 		if (pn < 2)
 			write(1, "Too few people!\n", 16);
-		else if (pn > 4)
+		else if (pn > MAX_PEOPLE)
 			write(1, "Too many people!\n", 17);
 		else
 		{
@@ -124,4 +124,43 @@ int	i_n(char	*msg)
 			write(1, "Input number!\n", 14);
 	}
 	return (atoi(s));
+}
+
+int	i_choice(int	rate, player	*p, int	pi)
+{
+	char	s[BUFFER];
+	int		i;
+
+	while (1)
+	{
+		i = -1;
+		while(i < 0)
+		{
+			o_choice(rate, p, pi);
+			i = i_str(s);
+		}
+		if (i == 1)
+			return (CALL);
+		if (isdigit_str(s))
+			return (atoi(s));
+		if (!strcmp(s, "DROP") || !strcmp(s, "Drop") || !strcmp(s, "drop") || !strcmp(s, "D") || !strcmp(s, "d"))
+			return (DROP);
+		if (!strcmp(s, "ALLIN") || !strcmp(s, "Allin") || !strcmp(s, "allin") || !strcmp(s, "ALL_IN") || !strcmp(s, "All_In") || !strcmp(s, "all_in") || !strcmp(s, "ALL IN") || !strcmp(s, "All In") || !strcmp(s, "all in") || !strcmp(s, "A") || !strcmp(s, "a"))
+			return (ALLIN);
+		if (!strcmp(s, "CALL") || !strcmp(s, "Call") || !strcmp(s, "call") || !strcmp(s, "C") || !strcmp(s, "c"))
+			return (CALL);
+		if (!strcmp(s, "RAIZE") || !strcmp(s, "Raise") || !strcmp(s, "raise") || !strcmp(s, "R") || !strcmp(s, "r"))
+		{
+			if ((p + pi)->wallet + (p + pi)->table <= rate)
+				return (ALLIN);
+			i = -1;
+			while(i < 0 || isdigit_str(s))
+			{
+				write(1, "How much do you bet:", 20);
+				i = i_str(s);
+			}
+			return (atoi(s));
+		}
+	}
+
 }

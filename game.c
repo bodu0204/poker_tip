@@ -1,11 +1,6 @@
 #include "poker_tip.h"
 #define ENTRY 1
 
-#define DROP -2
-#define ALLIN -1
-#define CALL 0
-#define BET 1
-
 void	settle(int	winer, player	*p, int	pn);
 int		det_geme(player	*p, int	pn);
 
@@ -86,7 +81,7 @@ int		det_geme(player	*p, int	pn)/* 勝負が付かなければ->0, 勝負がつ�
 	{
 		if ((p + i)->declare == BET)/* DROPとALLINの人はスキップ	(CALLの人はいない) */
 		{
-			bet = i_choice();		/* i_choice() :プレーヤに選択を訪ねてそれに応じて、drop-> -2, all_in-> -1, call->0, rase->賭け金 */		/* <-未完 */
+			bet = i_choice(rate, p, i);		/* i_choice() :プレーヤに選択を訪ねてそれに応じて、drop-> -2, all_in-> -1, call->0, rase->賭け金 */
 			if (!rate && bet == DROP)		/* 降りなくていい勝負で降りている人 */
 				bet = CALL;
 			if (bet + rate >= (p + i)->table + (p + i)->wallet && bet >= 0/* call or rase */)		/* 賭け金が足りていない人 */
@@ -101,7 +96,12 @@ int		det_geme(player	*p, int	pn)/* 勝負が付かなければ->0, 勝負がつ�
 			case ALLIN:
 				o_allin();		/* <-未完 */
 				if ((p + i)->table + (p + i)->wallet > rate)
+				{
 					rate = (p + i)->table + (p + i)->wallet;
+					for (size_t ii = 0; ii < pn; ii++)
+						if ((p + ii)->declare == CALL)
+							(p + ii)->declare = BET;
+				}
 				(p + i)->table += (p + i)->wallet;
 				(p + i)->wallet = 0;
 				(p + i)->declare = ALLIN;
