@@ -31,7 +31,6 @@ void	i_name(player	*p, int	pn);
 int		i_n(char	*msg);
 int		i_choice(int	rate, player	*p, int pi);
 
-
 void	o_clear(void);
 void	o_continue(void);
 void	o_exit(void);
@@ -39,7 +38,7 @@ void	o_start(void);
 void	o_change(void);
 void	o_battle(void);
 
-int	isdigit_str(char *s);
+int		isdigit_str(char *s);
 
 void	game(player	*p, int	pn);
 

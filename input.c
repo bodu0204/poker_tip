@@ -153,13 +153,7 @@ int	i_choice(int	rate, player	*p, int	pi)
 		{
 			if ((p + pi)->wallet + (p + pi)->table <= rate)
 				return (ALLIN);
-			i = -1;
-			while(i < 0 || isdigit_str(s))
-			{
-				write(1, "How much do you bet:", 20);
-				i = i_str(s);
-			}
-			return (atoi(s));
+			return (i_n("How much do you bet:"));
 		}
 	}
 
