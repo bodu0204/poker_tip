@@ -33,7 +33,7 @@ void	game(player	*p, int	pn)
 	win = det_geme(p, pn);
 	if (win)
 	{
-		settle(win - 1, p, pn);		/* <-未完 */
+		settle(win - 1, p, pn);
 		return;
 	}
 
@@ -45,14 +45,14 @@ void	game(player	*p, int	pn)
 	win = det_geme(p, pn);
 	if (win)
 	{
-		settle(win - 1, p, pn);		/* <-未完 */
+		settle(win - 1, p, pn);
 		return;
 	}
 
 	/* カードオープン */
 	o_battle();		/* <-未完 */
 	win = i_winer();		/* <-未完 */
-	settle(win - 1, p, pn);		/* <-未完 */
+	settle(win - 1, p, pn);
 	return;
 }
 
@@ -134,7 +134,31 @@ int		det_geme(player	*p, int	pn)/* 勝負が付かなければ->0, 勝負がつ�
 	return (0);
 }
 
+void	settle(int	winer, player	*p, int	pn)
+{
+	int	sum;
 
+	sum = 0;
+	for (size_t i = 0; i < pn; i++)
+	{
+		sum += (p + i)->table;
+		(p + i)->table = 0;
+		(p + i)->declare = BET;
+	}
+	o_winer(p + winer , sum);		/* <-未完 */
+	(p + winer)->wallet += sum;
+	for (size_t i = 0; i < pn; i++)/* 負け犬の除名 */
+	{
+		if ((p + i)->wallet == 0)
+		{
+			o_loser(p + i);		/* <-未完 */
+			memmove(p + i, p + i + 1, sizeof(player) * (pn - i - 1));
+			pn--;
+			bzero(p + pn, sizeof(player));
+		}
+	}
+	return ;
+}
 
 
 
