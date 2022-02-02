@@ -13,7 +13,7 @@ void o_space(void)
 
 void o_nline(int n)
 {
-	write(1, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", n % 16);
+	write(1, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", n & 15U);
 	n >>= 4;
 	while (n)
 	{

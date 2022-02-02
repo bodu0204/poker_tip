@@ -36,8 +36,10 @@ int main(void)
 		while (i < pn && (p + i)->wallet)
 			i++;
 		pn = i;
+		if (pn == 1)
+			break ;
 		o_continue();		/* <-未完 */
 	}while (i_str(s) == 1);
-	d_exit();		/* <-未完 */
+	o_exit(p);		/* <-未完 */
 	return (0);
 }

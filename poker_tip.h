@@ -24,22 +24,25 @@ typedef struct
 	int declare;
 } player;
 
-int		i_str(char	*s);
+//input.c
+int		i_str(char *s);
 int		i_pn(void);
 int		i_tips(void);
 void	i_name(player	*p, int	pn);
 int		i_n(char	*msg);
-int		i_choice(int	rate, player	*p, int pi);
+int		i_choice(int	rate, player	*p, int	pi);
 
+//output.c
 void	o_clear(void);
 void	o_continue(void);
-void	o_exit(void);
+void	o_exit(player	*);
 void	o_start(void);
 void	o_change(void);
 void	o_battle(void);
 
 int		isdigit_str(char *s);
 
+//game.c
 void	game(player	*p, int	pn);
 
 
