@@ -28,18 +28,27 @@ typedef struct
 int		i_str(char *s);
 int		i_pn(void);
 int		i_tips(void);
-void	i_name(player	*p, int	pn);
-int		i_n(char	*msg);
-int		i_choice(int	rate, player	*p, int	pi);
+void	i_name(player	*, int);
+int		i_n(char	*);
+int		i_choice(int, player	*, int);
+int		i_winer(player	*, int);
 
 //output.c
-void	o_clear(void);
-void	o_continue(void);
-void	o_exit(player	*);
-void	o_start(void);
-void	o_change(void);
-void	o_battle(void);
+void	o_continue(void);						/* <-未完 */
+void	o_exit(player	*);						/* <-未完 */
+void	o_clear(void);							/* <-未完 */
+void	o_start(void);							/* <-未完 */
+void	o_change(void);							/* <-未完 */
+void	o_battle(player	*, int);		/* <-未完 */
+void	o_drop(void);							/* <-未完 */
+void	o_allin(void);							/* <-未完 */
+void	o_call(void);							/* <-未完 */
+void	o_bet(void);							/* <-未完 */
+void	o_winer(player	*, int);				/* <-未完 */
+void	o_loser(player	*);						/* <-未完 */
+void	o_choice(int, player	*, int);		/* <-未完 */
 
+//tools.c
 int		isdigit_str(char *s);
 
 //game.c

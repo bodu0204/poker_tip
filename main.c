@@ -38,8 +38,8 @@ int main(void)
 		pn = i;
 		if (pn == 1)
 			break ;
-		o_continue();		/* <-未完 */
-	}while (i_str(s) == 1);
-	o_exit(p);		/* <-未完 */
+		o_continue();
+	}while (i_str(s) == 1 && pn != 1);
+	o_exit(p);
 	return (0);
 }

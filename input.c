@@ -158,3 +158,27 @@ int	i_choice(int	rate, player	*p, int	pi)
 	}
 
 }
+
+int		i_winer(player	*p, int	pn)
+{
+	char	*s[BUFFER];
+	int		i;
+	do
+	{
+		o_battle(p, pn);
+		i = i_str(s);
+		if (i > 1 && i <= 10 && isdigit_str(s))
+		{
+			i = atoi(s);
+			if (i <= pn && (p + i - 1)->declare != DROP)
+				return(i);
+		}
+		i = 0;
+		while (i < pn)
+		{
+			if (!strcmp((p + i)->name, s) && (p + i)->declare != DROP)
+				return (i + 1);
+			i++;
+		}
+	} while (1);
+}

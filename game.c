@@ -10,8 +10,8 @@ void	game(player	*p, int	pn)
 	int		i;
 	char	*s[BUFFER];
 
-	o_clear();		/* <-未完 */
-	o_start();		/* <-未完 */
+	o_clear();
+	o_start();
 
 	/* 参加費 */
 	i = 0;
@@ -21,7 +21,7 @@ void	game(player	*p, int	pn)
 		(p + i)->table += ENTRY;
 		if ((p + i)->wallet <= 0)/* チップが足りない人 */
 		{
-			o_allin();		/* <-未完 */
+			o_allin();
 			(p + i)->table += (p + i)->wallet;
 			(p + i)->wallet = 0;
 			(p + i)->declare = ALLIN;
@@ -37,7 +37,7 @@ void	game(player	*p, int	pn)
 		return;
 	}
 
-	o_change();		/* <-未完 */
+	o_change();
 	i_str(s);
 	bzero(s, BUFFER);
 
@@ -50,8 +50,7 @@ void	game(player	*p, int	pn)
 	}
 
 	/* カードオープン */
-	o_battle();		/* <-未完 */
-	win = i_winer();		/* <-未完 */
+	win = i_winer(p, pn);
 	settle(win - 1, p, pn);
 	return;
 }
@@ -89,12 +88,12 @@ int		det_geme(player	*p, int	pn)/* 勝負が付かなければ->0, 勝負がつ�
 			switch (bet)		/* それぞれの状況に合わせて処理 */
 			{
 			case DROP:
-				o_drop();		/* <-未完 */
+				o_drop();
 				(p + i)->declare = DROP;
 				drop++;
 				break;
 			case ALLIN:
-				o_allin();		/* <-未完 */
+				o_allin();
 				if ((p + i)->table + (p + i)->wallet > rate)
 				{
 					rate = (p + i)->table + (p + i)->wallet;
@@ -108,14 +107,14 @@ int		det_geme(player	*p, int	pn)/* 勝負が付かなければ->0, 勝負がつ�
 				allin++;
 				break;
 			case CALL:
-				o_call();		/* <-未完 */
+				o_call();
 				(p + i)->wallet -= rate - (p + i)->table;
 				(p + i)->table = rate;
 				(p + i)->declare = CALL;
 				call++;
 				break;
 			default:
-				o_bet();		/* <-未完 */
+				o_bet();
 				rate += bet;
 				(p + i)->wallet -= rate - (p + i)->table;
 				(p + i)->table = rate;
@@ -143,15 +142,15 @@ void	settle(int	winer, player	*p, int	pn)
 	{
 		sum += (p + i)->table;
 		(p + i)->table = 0;
-		(p + i)->declare = BET;
 	}
-	o_winer(p + winer , sum);		/* <-未完 */
+	o_winer(p + winer , sum);
 	(p + winer)->wallet += sum;
 	for (size_t i = 0; i < pn; i++)/* 負け犬の除名 */
 	{
+		(p + i)->declare = BET;
 		if ((p + i)->wallet == 0)
 		{
-			o_loser(p + i);		/* <-未完 */
+			o_loser(p + i);
 			memmove(p + i, p + i + 1, sizeof(player) * (pn - i - 1));
 			pn--;
 			bzero(p + pn, sizeof(player));
