@@ -39,7 +39,7 @@ void	o_exit(player	*);						/* <-未完 */
 void	o_clear(void);							/* <-未完 */
 void	o_start(void);							/* <-未完 */
 void	o_change(void);							/* <-未完 */
-void	o_battle(player	*, int);		/* <-未完 */
+void	o_battle(player	*, int);				/* <-未完 */
 void	o_drop(void);							/* <-未完 */
 void	o_allin(void);							/* <-未完 */
 void	o_call(void);							/* <-未完 */
